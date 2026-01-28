@@ -1,7 +1,8 @@
 Online Retail Business Analysis using Oracle SQL
 
 Project Title: Online Retail II  
- 
+Data: Taken from Kaggle online reatil II
+
 ## Problem
 The dataset from a UK-based online retail company contained 541,910 transactions across multiple countries. Like most real-world business data, it was messy — with nulls, invalid records, inconsistent date formats, and duplicates. The challenge was to transform this raw data into actionable insights that drive business decisions.
 
@@ -63,3 +64,4 @@ Impact: Targeted expansion strategies could unlock new revenue streams.
 This project demonstrates the end-to-end data analysis lifecycle in Oracle SQL — from raw data ingestion to actionable insights. The findings from this project can help drive business decisions by understanding sales patterns, customer behavior, and product performance
 
 ## Author: Pallavi Mali
+
