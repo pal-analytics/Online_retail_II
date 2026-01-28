@@ -1,0 +1,51 @@
+-- Phase 3: Data Modeling & Cleaning --
+-- Objective: Clean raw data, standardize date formats,
+-- remove invalid records, and create analytical features
+
+CREATE TABLE RETAIL_CLEAN AS
+SELECT
+  INVOICE,
+  STOCKCODE,
+  DESCRIPTION,
+  QUANTITY,
+    TO_DATE(INVOICEDATE, 'MM/DD/YY HH24:MI') AS INVOICE_DATE,
+  PRICE,
+  CUSTOMER_ID,
+  COUNTRY,
+  (QUANTITY * PRICE) AS TOTAL_AMOUNT
+FROM RETAIL
+WHERE
+  INVOICE NOT LIKE 'C%'
+  AND QUANTITY > 0
+  AND PRICE > 0
+  AND CUSTOMER_ID IS NOT NULL;
+  
+-- Validate cleaned data
+SELECT COUNT(*) AS Clean_rows FROM RETAIL_CLEAN;
+
+-- Check column data types
+SELECT COLUMN_NAME, DATA_TYPE FROM USER_TAB_COLUMNS
+WHERE TABLE_NAME = 'RETAIL_CLEAN';
+
+-- Add date attributes for time-series analysis
+ALTER TABLE RETAIL_CLEAN ADD (
+  INVOICE_YEAR NUMBER,
+  INVOICE_MONTH NUMBER);
+
+UPDATE RETAIL_CLEAN
+SET
+  INVOICE_YEAR = EXTRACT(YEAR FROM INVOICE_DATE),
+  INVOICE_MONTH = EXTRACT(MONTH FROM INVOICE_DATE);
+  
+COMMIT;
+
+-- Final validation summary
+SELECT
+  MIN(INVOICE_DATE) AS First_Date,
+  MAX(INVOICE_DATE) AS Last_Date,
+  COUNT(DISTINCT CUSTOMER_ID) AS Unique_Customers,
+  SUM(TOTAL_AMOUNT) AS Total_Revenue
+FROM RETAIL_CLEAN;
+
+
+  
